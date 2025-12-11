@@ -5,20 +5,22 @@ import time
 
 def read_style_guide():
     try:
-        with open("memory/style_guide.txt", "r") as f:
+        # FIX: Added encoding="utf-8"
+        with open("memory/style_guide.txt", "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         return "No specific rules yet."
 
 def update_style_guide(addition):
-    with open("memory/style_guide.txt", "a") as f:
+    # FIX: Added encoding="utf-8"
+    with open("memory/style_guide.txt", "a", encoding="utf-8") as f:
         f.write("\n- " + addition)
 
 def main():
     print("🚀 Starting AI Engineering Team...")
     user_request = input("Enter feature request: ")
     
-    max_retries = 3
+    max_retries = 5
     attempt = 1
     success = False
 
@@ -42,7 +44,7 @@ def main():
         decision = TechLead().run(code, audit)
         
         # Check verdict
-        if "YES" in decision.upper() and "NO" not in decision.upper():
+        if "VERDICT: YES" in decision.upper() and "NO" not in decision.upper():
             print("\n✅ TEAM SUCCESS! Code Merged.")
             print("\nFinal Code:\n", code)
             success = True
@@ -51,12 +53,17 @@ def main():
             print("\n❌ REJECTED. Fixing issues...")
             
             # 4. LEARNING STEP (Crucial for Hackathon)
-            # Extract the new rule from the Tech Lead's decision
-            # (We assume the Tech Lead outputs "Add to style guide: X")
             if "Add to style guide:" in decision:
-                new_rule = decision.split("Add to style guide:")[-1].split("\n")[0].strip()
-                update_style_guide(new_rule)
-                print(f"   -> 🧠 Learned new rule: {new_rule}")
+                try:
+                    new_rule = decision.split("Add to style guide:")[-1].split("\n")[0].strip()
+                    # Only add if it's a real rule
+                    if len(new_rule) > 5 and "None" not in new_rule:
+                        update_style_guide(new_rule)
+                        print(f"   -> 🧠 Learned new rule: {new_rule}")
+                    else:
+                        print("   -> (No new rule added this time)")
+                except Exception as e:
+                    print(f"   -> ⚠️ Failed to save rule: {e}")
             
             # Send feedback back to Junior Dev via the 'user_request' for the next loop
             user_request = f"Previous attempt failed.\nFeedback: {audit}\n\nOriginal Request: {user_request}"

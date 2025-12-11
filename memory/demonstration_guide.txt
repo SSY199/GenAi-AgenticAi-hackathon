@@ -1,0 +1,13 @@
+1. Validate user input where possible.
+2. Never hardcode secrets (API keys, passwords). Use os.getenv().
+3. Use snake_case for variable names (e.g., user_id).
+4. Write clear, readable code with simple logic.
+5. Include comments or docstrings to explain what functions do.
+6. Handle errors gracefully using try/except blocks.
+- Validate all external configuration values (e.g., environment variables) before use and never expose internal error details directly; use a safe logger and enforce strict type checks for inputs.
+- **Never assume a library object supports the context‑manager protocol; always verify that `__enter__`/`__exit__` are implemented (e.g., sqlite3.Cursor) and use explicit `close()` or the connection’s context manager instead.**
+- Require all file‑system inputs to be validated and opened atomically (e.g., using `os.open` with `O_NOFOLLOW` and `O_RDONLY` followed by `os.fstat`), and enforce explicit SQLite security PRAGMAs; never rely on separate “check‑then‑use” patterns for paths or permissions.
+- **Never use a bare `except Exception:`; always catch specific exception types and preserve the original traceback when logging errors.**
+- **Never rely on `atexit` or other deferred cleanup for security‑critical resources; always close file descriptors and other resources explicitly in a `finally` block after use.**
+- Never resolve a file path before atomically opening it; always open the raw pathname with `O_NOFOLLOW` (or a platform‑specific equivalent) first and then validate the descriptor via `fstat`.
+- When setting up module‑level logging, do not call `logging.basicConfig` and then add a `NullHandler`; either rely on `basicConfig` alone or add a `NullHandler` without invoking `basicConfig` to avoid duplicate handlers.

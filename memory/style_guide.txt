@@ -1,6 +1,4 @@
-1. Always validate and sanitize user input.
-2. Never hardcode secrets (API keys, passwords). Use os.getenv().
-3. Use clear variable names and snake_case (e.g., user_id, not x).
-4. Keep functions short (<= 50 lines).
-5. Prefer early returns over deep nesting to improve readability.
-6. Add docstrings for all functions explaining what they do.
+
+1. Never hardcode secrets.
+2. Prevent SQL Injection by using parameterized queries (e.g., cursor.execute("...", (var,))).
+3. Keep code simple.
