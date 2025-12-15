@@ -36,6 +36,10 @@ export const useCodeReview = () => {
 
         // 2. Map the Backend response to the Frontend UI format
         // The backend returns a list of attempts in 'data.history'
+        if (!data.history || !Array.isArray(data.history)) {
+          throw new Error("Invalid response format from backend");
+        }
+
         const iterations: Iteration[] = data.history.map(
           (step: {
             attempt: number;
