@@ -1,4 +1,5 @@
-
 1. Never hardcode secrets.
 2. Prevent SQL Injection by using parameterized queries (e.g., cursor.execute("...", (var,))).
 3. Keep code simple.
+- **Rule 1:** Always use a secure connection method, such as SSL/TLS, to encrypt the data transmitted between the application and the database.
+- "Always handle potential exceptions when interacting with external resources, such as files, databases, or network connections."

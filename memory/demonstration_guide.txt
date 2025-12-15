@@ -11,3 +11,9 @@
 - **Never rely on `atexit` or other deferred cleanup for security‑critical resources; always close file descriptors and other resources explicitly in a `finally` block after use.**
 - Never resolve a file path before atomically opening it; always open the raw pathname with `O_NOFOLLOW` (or a platform‑specific equivalent) first and then validate the descriptor via `fstat`.
 - When setting up module‑level logging, do not call `logging.basicConfig` and then add a `NullHandler`; either rely on `basicConfig` alone or add a `NullHandler` without invoking `basicConfig` to avoid duplicate handlers.
+
+
+Part 1: The "Why" (The Hook)
+Part 2: The Components (Technical Deep Dive)
+Part 3: The "Tracking & Improvement" Requirement
+Part 4: The Live Demo (The Script)
