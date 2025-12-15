@@ -27,7 +27,10 @@ def read_style_guide():
     try:
         with open("memory/style_guide.txt", "r", encoding="utf-8") as f:
             return f.read()
-    except:
+    except FileNotFoundError:
+        return ""
+    except IOError as e:
+        print(f"Error reading style guide: {e}")
         return ""
 
 def update_style_guide(rule):
