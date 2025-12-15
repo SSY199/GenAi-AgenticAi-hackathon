@@ -94,8 +94,8 @@ async def run_review(body: RequestBody):
                 new_rule = verdict.split("Add to style guide:")[-1].strip().split("\n")[0]
                 if len(new_rule) > 10 and "None" not in new_rule:
                     update_style_guide(new_rule)
-            except:
-                pass
+            except (IndexError, ValueError) as e:
+                print(f"Failed to extract style guide rule: {e}")
         
         # Update prompt for next loop
         user_request = f"Previous attempt failed.\nFeedback: {audit}\n\nOriginal Request: {body.prompt}"
