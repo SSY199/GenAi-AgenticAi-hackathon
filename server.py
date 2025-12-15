@@ -61,15 +61,19 @@ async def run_review(body: RequestBody):
         
         # 2. Junior Dev Writes Code
         code = JuniorDeveloper().run(user_request, current_style)
-        time.sleep(2)  # Delay to avoid RPM limits
+import asyncio
+import time
+
+# ... in run_review function:
+        await asyncio.sleep(2)  # Delay to avoid RPM limits
         
         # 3. Security Auditor Checks
         audit = SecurityAuditor().run(code)
-        time.sleep(2)  # Delay
+        await asyncio.sleep(2)  # Delay
         
         # 4. Tech Lead Decides
         verdict = TechLead().run(code, audit)
-        time.sleep(2)  # Delay
+        await asyncio.sleep(2)  # Delay
 
         # 5. Determine Status
         is_approved = "VERDICT: YES" in verdict.upper()
