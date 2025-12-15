@@ -13,7 +13,7 @@ export const useCodeReview = () => {
   const [selectedIterationIndex, setSelectedIterationIndex] = useState(0);
 
   const runReview = useCallback(
-    async (feature: string, language: string, maxIterations: number) => {
+    async (feature: string, language: string) => {
       setIsLoading(true);
       setError(null);
 
