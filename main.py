@@ -5,22 +5,20 @@ import time
 
 def read_style_guide():
     try:
-        # FIX: Added encoding="utf-8"
-        with open("memory/style_guide.txt", "r", encoding="utf-8") as f:
+        with open("memory/style_guide.txt", "r") as f:
             return f.read()
     except FileNotFoundError:
         return "No specific rules yet."
 
 def update_style_guide(addition):
-    # FIX: Added encoding="utf-8"
-    with open("memory/style_guide.txt", "a", encoding="utf-8") as f:
+    with open("memory/style_guide.txt", "a") as f:
         f.write("\n- " + addition)
 
 def main():
     print("🚀 Starting AI Engineering Team...")
     user_request = input("Enter feature request: ")
     
-    max_retries = 5
+    max_retries = 3
     attempt = 1
     success = False
 
@@ -34,17 +32,20 @@ def main():
         print("👨‍💻 Junior Dev is coding...")
         code = JuniorDeveloper().run(user_request, current_style)
         print(f"   -> Code generated ({len(code)} chars)")
+        time.sleep(2)  # Delay to avoid RPM limits
 
         # 2. Auditor checks it
         print("🕵️  Security Auditor is scanning...")
         audit = SecurityAuditor().run(code)
+        time.sleep(2)  # Delay
 
         # 3. Tech Lead decides
         print("boss  Tech Lead is reviewing...")
         decision = TechLead().run(code, audit)
+        time.sleep(2)  # Delay
         
         # Check verdict
-        if "VERDICT: YES" in decision.upper() and "NO" not in decision.upper():
+        if "VERDICT: YES" in decision.upper():
             print("\n✅ TEAM SUCCESS! Code Merged.")
             print("\nFinal Code:\n", code)
             success = True
@@ -53,22 +54,17 @@ def main():
             print("\n❌ REJECTED. Fixing issues...")
             
             # 4. LEARNING STEP (Crucial for Hackathon)
+            # Extract the new rule from the Tech Lead's decision
             if "Add to style guide:" in decision:
-                try:
-                    new_rule = decision.split("Add to style guide:")[-1].split("\n")[0].strip()
-                    # Only add if it's a real rule
-                    if len(new_rule) > 5 and "None" not in new_rule:
-                        update_style_guide(new_rule)
-                        print(f"   -> 🧠 Learned new rule: {new_rule}")
-                    else:
-                        print("   -> (No new rule added this time)")
-                except Exception as e:
-                    print(f"   -> ⚠️ Failed to save rule: {e}")
+                new_rule = decision.split("Add to style guide:")[-1].strip().split("\n")[0]
+                if len(new_rule) > 10:
+                    update_style_guide(new_rule)
+                    print(f"   -> 🧠 Learned new rule: {new_rule}")
             
             # Send feedback back to Junior Dev via the 'user_request' for the next loop
             user_request = f"Previous attempt failed.\nFeedback: {audit}\n\nOriginal Request: {user_request}"
             attempt += 1
-            time.sleep(1) # formatting pause
+            time.sleep(1)  # Formatting pause
 
     if not success:
         print("\n💀 Failed after max retries.")
